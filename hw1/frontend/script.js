@@ -1,19 +1,34 @@
-/* global axios */
 const itemGlanceTemplate = document.querySelector("#diary-glance-template");
 const diaryList = document.querySelector("#diaries");
 const diaryShow = document.querySelector("#show-diary");
 const diaryModify = document.querySelector("#modify-diary");
+const apiRoot = "http://localhost:8000/api";
+const test = document.querySelector("#test-button");
 
-const instance = axios.create({
-  baseURL: "http://localhost:8000/api",
-});
 let isShow = false;
 let isModify = false;
 
+const currentDate = new Date();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const testing = document.querySelector("#test-button");
+  testing.addEventListener("click", () => {
+    console.log("testing");
+    try {
+      const diary = createDiary({ description:"test",date:formatTime(currentDate),tag:"tag",mood:"mood" });
+      renderDiary(diary);
+    } catch (error) {
+      alert("Failed to create diary!");
+      return;
+    }
+  });
+});
+
 async function main() {
   checkRender();
-  setupEventListenersForAdd();
+  //setupEventListenersForAdd();
   setupEventListenersForView();
+  modifyPage();
   try {
     const diaries = await getDiarys();
     diaries.forEach((diary) => renderDiary(diary));
@@ -27,14 +42,8 @@ function checkRender(){
     diaryList.style.display='none';
     diaryShow.style.display='';
     diaryModify.style.display='none';
-  }
-  else{
-    diaryList.style.display='';
-    diaryShow.style.display='none';
-    diaryModify.style.display='none';
-    setupEventListenersForAdd();
-  }
-  if(isModify){
+  }else if(isModify){
+    console.log("modifying")
     diaryList.style.display='none';
     diaryShow.style.display='none';
     diaryModify.style.display='';
@@ -44,22 +53,28 @@ function checkRender(){
     diaryShow.style.display='none';
     diaryModify.style.display='none';
     setupEventListenersForAdd();
-  }
+  };
 }
-
+//｢新增｣按鈕按下，顯現編輯頁面
 function setupEventListenersForAdd(){
   const addDiaryButton = document.querySelector("#diary-add");
   addDiaryButton.addEventListener("click", () => {
+    console.log("adding!");
     isModify = true;
     isShow = false;
     const setDate = document.querySelector("#modify-diary .date");
-    setDate.value=formatTime();
+    setDate.value=formatTime(currentDate);
+    diaryList.style.display='none';
+    diaryShow.style.display='none';
+    diaryModify.style.display='';
+    modifyPage();
   });
 }
 
 function setupEventListenersForView(){
   diaryList.forEach((diary)=>{
     diary.addEventListener("click",()=>{
+      console.log("show!");
       isShow=true;
       isModify=false;
       const setDate = document.querySelector("#show-diary .date");
@@ -75,8 +90,8 @@ function setupEventListenersForView(){
 }
 
 function modifyPage() {
-  const confirmAddButton = document.querySelector("#confirm");
-  const cancelButton = document.querySelector("#cancel");
+  const confirmAddButton = document.querySelector(".confirm");
+  const cancelButton = document.querySelector(".cancel");
   const diaryDate = document.querySelector("#modify-diary .date");
   const diaryTag = document.querySelector("#tag-form");
   const diaryMood = document.querySelector("#mood-form");
@@ -84,16 +99,35 @@ function modifyPage() {
     "#diary-description-input",
   );
   cancelButton.addEventListener("click",()=>{
+    console.log("cancel");
     isShow=false;
     isModify=false;
+    diaryList.style.display='';
+    diaryShow.style.display='none';
+    diaryModify.style.display='none';
   });
   confirmAddButton.addEventListener("click", async () => {
+    console.log("truely added!");
+    isShow=false;
+    isModify=false;
+    diaryList.style.display='';
+    diaryShow.style.display='none';
+    diaryModify.style.display='none';
     const date = diaryDate.value;
     const description = diaryDescriptionInput.value;
     const tag = diaryTag.value;
+    console.log(tag);
     const mood = diaryMood.value;
     if (!description) {
       alert("Please enter a diary description!");
+      return;
+    }
+    if (!tag) {
+      alert("Please enter a diary tag!");
+      return;
+    }
+    if (!mood) {
+      alert("Please enter a diary mood!");
       return;
     }
     try {
@@ -103,9 +137,9 @@ function modifyPage() {
       alert("Failed to create diary!");
       return;
     }
-    diaryDate.value="";
-    diaryDescriptionInput.value = "";
   });
+  diaryDate.value="";
+  diaryDescriptionInput.value = "";
 }
 
 function renderDiary(diary) {
@@ -145,24 +179,42 @@ async function deleteDiaryElement(id) {
 }
 
 async function getDiarys() {
-  const response = await instance.get("/diaries");
-  return response.data;
+  const response = await fetch(`${apiRoot}/diaries`);
+  const data = await response.json();
+  return data;
 }
 
 async function createDiary(diary) {
-  const response = await instance.post("/diaries", diary);
-  return response.data;
+  const response = await fetch(`${apiRoot}/diaries`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(todo),
+  });
+  const data = await response.json();
+  return data;
 }
 
 // eslint-disable-next-line no-unused-vars
 async function updateDiaryStatus(id, diary) {
-  const response = await instance.put(`/diaries/${id}`, diary);
-  return response.data;
+  const response = await fetch(`${apiRoot}/diaries/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(todo),
+  });
+  const data = await response.json();
+  return data;
 }
 
 async function deleteDiaryById(id) {
-  const response = await instance.delete(`/diaries/${id}`);
-  return response.data;
+  const response = await fetch(`${apiRoot}/diaries/${id}`, {
+    method: "DELETE",
+  });
+  const data = await response.json();
+  return data;
 }
 
 function formatTime(date) {

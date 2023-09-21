@@ -9,8 +9,13 @@
     "prettier": "^3.0.3"
   },
   "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write ."
+  },
+  "dependencies": {
+    "nodemon": "^3.0.1"
   }
 }
