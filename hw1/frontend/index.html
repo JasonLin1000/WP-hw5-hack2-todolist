@@ -13,34 +13,39 @@
       <div id=""></div>
     </div>
     <section id="diaries"></section>
-    <section id="show-diary"></section>
+    
+    <section id="show-diary">
+      <div>
+        <p class="date">2023/09/14(四)</p>
+        <p class="tag">標籤</p>
+        <p class="mood">心情</p>
+      </div>
+      <p class="diary-description-show">日記內容，阿布拉布拉...</p>
+      <button data-id="" class="modify-diary">編輯</button>
+    </section>
+
     <section id="modify-diary">
-      <details id="" class="diary-item">
-        <summary>
-          <div>
-            <p class="date">2023/09/14(四)</p>
-            <select id="tag-form">
-              <option value="school">學業</option>
-              <option value="relationship">人際</option>
-              <option valus="club">社團</option>
-            </select>
-            <select id="mood-form">
-              <option value="happy">快樂</option>
-              <option value="mad">生氣</option>
-              <option value="sad">難過</option>
-            </select>
-            <p class="diary-discription">日記內容，阿布拉布拉...</p>
-            <textarea
-              id="diary-description-input"
-              placeholder="描述"
-              tabindex="2"
-            ></textarea>
-          </div>
-          <button data-id="" class="cancel">取消</button>
-          <button data-id="" class="confirm">確認</button>
-        </summary>
-        <p class="diary-description">diary 1 description</p>
-      </details>
+      <div>
+        <p class="date">2023/09/14(四)</p>
+        <select id="tag-form">
+          <option value="學業">學業</option>
+          <option value="人際">人際</option>
+          <option valus="社團">社團</option>
+        </select>
+        <select id="mood-form">
+          <option value="快樂">快樂</option>
+          <option value="生氣">生氣</option>
+          <option value="難過">難過</option>
+        </select>
+        <p class="diary-discription">日記內容，阿布拉布拉...</p>
+        <textarea
+          id="diary-description-input"
+          placeholder="描述"
+          tabindex="2"
+        ></textarea>
+      </div>
+      <button data-id="" class="cancel">取消</button>
+      <button data-id="" class="confirm">確認</button>
     </section>
   </body>
 
@@ -54,20 +59,6 @@
         </div>
       </summary>
       <p class="diary-description">日記內容，阿布拉布拉...</p>
-    </details>
-  </template>
-
-  <template id="diary-view-template">
-    <details id="" class="diary-item">
-      <summary>
-        <div>
-          <p class="date">2023/09/14(四)</p>
-          <p class="tag">標籤</p>
-          <p class="mood">心情</p>
-        </div>
-      </summary>
-      <p class="diary-description">日記內容，阿布拉布拉...</p>
-      <button data-id="" class="modify-diary">編輯</button>
     </details>
   </template>
 </html>
