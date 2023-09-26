@@ -8,9 +8,9 @@ import App from "./App.tsx";
 import { CardProvider } from "./hooks/useCards.tsx";
 import "./index.css";
 
-const darkTheme = createTheme({
+const lightTheme = createTheme({
   palette: {
-    mode: "dark",
+    mode: "light",
   },
 });
 
@@ -19,7 +19,7 @@ const darkTheme = createTheme({
 //                                                 V this is the non null assertion operator, which tells typescript that the value will not be nullish
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={lightTheme}>
       <CardProvider>
         <CssBaseline />
         <App />

@@ -15,20 +15,19 @@ import Typography from "@mui/material/Typography";
 
 import useCards from "@/hooks/useCards";
 import { createCard, deleteCard, updateCard } from "@/utils/client";
-import { createContext } from "vm";
+
+const currentDate = new Date();
 
 type NewCardDialogProps = {
   variant: "new";
   open: boolean;
   onClose: () => void;
-  // listId: string;
 };
 
 type EditCardDialogProps = {
   variant: "edit";
   open: boolean;
   onClose: () => void;
-  // listId: string;
   cardId: string;
   title: string;
   description: string;
@@ -57,21 +56,32 @@ const tagList:listformat[]=[
     name: "社團",
   },
 ];
+const moodList:listformat[]=[
+  {
+    id: "快樂",
+    name: "快樂",
+  },
+  {
+    id: "生氣",
+    name: "生氣",
+  },
+  {
+    id: "難過",
+    name: "難過",
+  }
+]
 
 export default function CardDialog(props: CardDialogProps) {
   const { variant, open, onClose} = props;
   const title = variant === "edit" ? props.title : "";
   const description = variant === "edit" ? props.description : "";
-  const date = variant === "edit" ? props.date : "";
+  const date = variant === "edit" ? props.date : formatTime(currentDate);
   const tag = variant === "edit" ? props.tag : "";
   const mood = variant === "edit" ? props.mood : "";  
 
 
   const [edittingTitle, setEdittingTitle] = useState(variant === "new");
   const [edittingDescription, setEdittingDescription] = useState(variant === "new",);
-  const [edittingDate, setEdittingDate] = useState(variant === "new");
-  const [edittingTag, setEdittingTag] = useState(variant === "new");
-  const [edittingMood, setEdittingMood] = useState(variant === "new");
 
   // using a state variable to store the value of the input, and update it on change is another way to get the value of a input
   // however, this method is not recommended for large forms, as it will cause a re-render on every change
@@ -81,6 +91,7 @@ export default function CardDialog(props: CardDialogProps) {
   const [newDate, setNewDate] = useState(date);
   const [newTag, setNewTag] = useState(tag);
   const [newMood, setNewMood] = useState(mood);
+  const [cardNum, setCardNum] = useState(0);
 
   const { lists, fetchCards } = useCards();
 
@@ -98,18 +109,19 @@ export default function CardDialog(props: CardDialogProps) {
   const handleSave = async () => {
     try {
       if (variant === "new") {
-        await createCard({
+        createCard({
           title: newTitle,
           description: newDescription,
           date: newDate,
           tag: newTag,
           mood: newMood,
         });
+        setCardNum(cardNum+1);
+        fetchCards();
       } else {
         if (
           newTitle === title &&
           newDescription === description &&
-          newDate === date &&
           newTag === tag &&
           newMood === mood
         ) {
@@ -137,6 +149,7 @@ export default function CardDialog(props: CardDialogProps) {
     }
     try {
       await deleteCard(props.cardId);
+      setCardNum(cardNum-1);
       fetchCards();
     } catch (error) {
       alert("Error: Failed to delete card");
@@ -144,6 +157,16 @@ export default function CardDialog(props: CardDialogProps) {
       handleClose();
     }
   };
+
+  function formatTime(date:Date) {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 月份從0開始，所以要加1
+    const day = date.getDate().toString().padStart(2, '0');
+    const daysOfWeek = ['日', '一', '二', '三', '四', '五', '六'];
+    const dayOfWeek = daysOfWeek[date.getDay()]; // 星期幾
+  
+    return `${year}/${month}/${day}(${dayOfWeek})`;
+  }
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -182,6 +205,17 @@ export default function CardDialog(props: CardDialogProps) {
             </MenuItem>
           ))}
         </Select>
+        <Select
+          value={newMood}
+          onChange={(e) => setNewMood(e.target.value)}
+        >
+          {moodList.map((mood) => (
+            <MenuItem value={mood.id} key={mood.id}>
+              {mood.name}
+            </MenuItem>
+          ))}
+        </Select>
+        <div>{date}</div>
         {variant === "edit" && (
           <IconButton color="error" onClick={handleDelete}>
             <DeleteIcon />

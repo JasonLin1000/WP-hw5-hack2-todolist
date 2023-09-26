@@ -47,13 +47,6 @@ function App() {
           {lists.map((card) => (
             <Card key={card.id} {...card} />
           ))}
-          <Button
-            variant="contained"
-            onClick={() => setNewCardDialogOpen(true)}
-          >
-            <AddIcon className="mr-2" />
-            Add a card
-          </Button>
         </div>
         <CardDialog
           variant="new"
