@@ -1,5 +1,4 @@
 import {useState } from "react";
-import MenuIcon from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
@@ -7,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import CardDialogEdit from "./CardDialogEdit";
 import { Add as AddIcon } from "@mui/icons-material";
 import { Button } from "@mui/material";
+import EventNoteIcon from '@mui/icons-material/EventNote';
 
 export default function HeaderBar() {
   const [newCardDialogOpen, setNewCardDialogOpen] = useState(false);
@@ -20,7 +20,7 @@ export default function HeaderBar() {
           aria-label="menu"
           sx={{ mr: 2 }}
         >
-          <MenuIcon />
+          <EventNoteIcon />
         </IconButton>
         <Typography variant="h3" component="div" sx={{ flexGrow: 1 }} justifyContent="center" align="center">
           Diary
