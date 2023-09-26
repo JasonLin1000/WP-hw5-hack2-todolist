@@ -1,62 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <title>My Diary</title>
-    <link rel="stylesheet" href="style.css"/>
-    <script defer src="script.js"></script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>trello clone</title>
   </head>
   <body>
-    <div id="header1">
-      <h1>My Diary</h1>
-      <button id="diary-add" tabindex="3">新增</button>
-    </div>
-    <section id="diaries"></section>
-    <button id="test-button">hi</button>
-    <section id="show-diary">
-      <div>
-        <p class="date">2023/09/14(四)</p>
-        <p class="tag">標籤</p>
-        <p class="mood">心情</p>
-      </div>
-      <p class="diary-description-show">日記內容，阿布拉布拉...</p>
-      <button data-id="" class="modify-diary">編輯</button>
-    </section>
-
-    <section id="modify-diary">
-      <div>
-        <p class="date">2023/09/14(四)</p>
-        <select id="tag-form">
-          <option value="學業">學業</option>
-          <option value="人際">人際</option>
-          <option valus="社團">社團</option>
-        </select>
-        <select id="mood-form">
-          <option value="快樂">快樂</option>
-          <option value="生氣">生氣</option>
-          <option value="難過">難過</option>
-        </select>
-        <p class="diary-discription">日記內容：</p>
-        <textarea
-          id="diary-description-input"
-          placeholder="描述"
-          tabindex="2"
-        ></textarea>
-      </div>
-      <button data-id="" class="cancel">取消</button>
-      <button data-id="" class="confirm">確認</button>
-    </section>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
-
-  <template id="diary-glance-template">
-    <details id="" class="diary-item">
-      <summary>
-        <div>
-          <h1 class="date">2023/09/14(四)</h1>
-          <p class="tag">標籤</p>
-          <p class="mood">心情</p>
-        </div>
-      </summary>
-      <p class="diary-description">日記內容，阿布拉布拉...</p>
-    </details>
-  </template>
 </html>

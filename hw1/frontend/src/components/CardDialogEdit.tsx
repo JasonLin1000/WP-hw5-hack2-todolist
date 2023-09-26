@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Delete as DeleteIcon, FilterListOff } from "@mui/icons-material";
+import { Delete as DeleteIcon} from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Dialog from "@mui/material/Dialog";
@@ -71,7 +71,7 @@ const moodList:listformat[]=[
   }
 ]
 
-export default function CardDialog(props: CardDialogProps) {
+export default function CardDialogEdit(props: CardDialogProps) {
   const { variant, open, onClose} = props;
   const title = variant === "edit" ? props.title : "";
   const description = variant === "edit" ? props.description : "";
@@ -93,7 +93,7 @@ export default function CardDialog(props: CardDialogProps) {
   const [newMood, setNewMood] = useState(mood);
   const [cardNum, setCardNum] = useState(0);
 
-  const { lists, fetchCards } = useCards();
+  const {fetchCards } = useCards();
 
   const handleClose = () => {
     onClose();
@@ -248,8 +248,8 @@ export default function CardDialog(props: CardDialogProps) {
           </button>
         )}
         <DialogActions>
-          <Button onClick={handleSave}>save</Button>
-          <Button onClick={handleClose}>close</Button>
+          <Button onClick={handleSave}>儲存</Button>
+          <Button onClick={handleClose}>取消</Button>
         </DialogActions>
       </DialogContent>
     </Dialog>

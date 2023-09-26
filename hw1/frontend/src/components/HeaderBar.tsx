@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Card from "@/components/Card";
-import type { CardProps } from "@/components/Card";
-import CardDialog from "@/components/CardDialog";
-import useCards from "@/hooks/useCards";
+import CardDialogEdit from "./CardDialogEdit";
 import { Add as AddIcon } from "@mui/icons-material";
 import { Button } from "@mui/material";
 
@@ -25,7 +22,7 @@ export default function HeaderBar() {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant="h3" component="div" sx={{ flexGrow: 1 }} justifyContent="center" align="center">
           Diary
         </Typography>
         <Button
@@ -36,12 +33,11 @@ export default function HeaderBar() {
           新增
         </Button>
       </Toolbar>
-      <CardDialog
-          variant="new"
-          open={newCardDialogOpen}
-          onClose={() => setNewCardDialogOpen(false)}
-          // listId={id}
-        />
+      <CardDialogEdit
+        variant="new"
+        open={newCardDialogOpen}
+        onClose={() => setNewCardDialogOpen(false)}
+      />
     </AppBar>
   );
 }

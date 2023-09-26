@@ -1,8 +1,7 @@
 import { useState } from "react";
 import * as React from "react";
-import { Grid, Chip, Box } from "@mui/material";
+import { Grid, Chip} from "@mui/material";
 import Cardd from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
@@ -47,12 +46,9 @@ export default function Card({ id, title, description, date, tag, mood }: CardPr
   return (
     <>
       <button onClick={handleClickOpen} className="text-start">
-        <Box sx={{width:150, maxHeight: 100}}>
-          <Cardd variant="outlined" sx={{width:250, maxHeight: 200}}>{theCard}</Cardd>
-        </Box>    
+        <Cardd variant="outlined" sx={{width:300, maxHeight: 200}}>{theCard}</Cardd>
       </button>
       <CardDialog
-        variant="edit"
         open={open}
         onClose={() => setOpen(false)}
         title={title}
