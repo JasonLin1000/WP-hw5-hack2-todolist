@@ -4,10 +4,10 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
-import uselist from "@/hooks/uselist";
+import useList from "@/hooks/useList";
 
 export default function HeaderBar() {
-  const {setPage,setList} = uselist();
+  const {setPage,setList} = useList();
   return (
     <AppBar position="static">
       <Toolbar>

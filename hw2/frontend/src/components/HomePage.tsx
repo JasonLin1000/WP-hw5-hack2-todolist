@@ -62,7 +62,7 @@ export default function HomePage(){
       <main className="mx-auto flex max-h-full flex-row gap-6 px-24 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {lists.map((list) => (
-            <div className="p-4">
+            <div key={list.id} className="p-4">
               <SongList id={list.id} name = {list.name} description = {list.description} del={deleting} songs={list.songs.length}/>
             </div>
           ))}

@@ -41,7 +41,7 @@ export function MyProvider({ children }: SongProviderProps) {
 }
 
 // this is a custom hook, the name must start with "use"
-export default function uselist() {
+export default function useList() {
   const context = useContext(SongContext);
   // uncomment this if you use the null default value
   // if (!context) {

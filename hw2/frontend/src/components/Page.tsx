@@ -1,10 +1,10 @@
 import HomePage from "./HomePage";
 import Lists from "./Lists";
 
-import uselist from "@/hooks/uselist";
+import useList from "@/hooks/useList";
 
 export default function Page(){
-  const {page,list} = uselist();
+  const {page,list} = useList();
   return (
     <>
       {(page==="home")?(

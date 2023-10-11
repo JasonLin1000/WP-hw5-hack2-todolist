@@ -49,7 +49,7 @@ export default function Song({ id, title, singer, listId, link }: SongProps) {
           <button onClick={handleClickOpen} className={classes.text}>
             {singer}
           </button>
-          <a className={classes.text}  href={link} target="_blank">{link}</a>
+          <a className={classes.text}  href={link} target="_blank" rel="noopener noreferrer">{link}</a>
         </div>
       </Paper>
       <SongDialog

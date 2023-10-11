@@ -7,7 +7,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import App from "./App.tsx";
 import { SongProvider } from "./hooks/useSongs.tsx";
 import "./index.css";
-import { MyProvider } from "./hooks/uselist.tsx";
+import { MyProvider } from "./hooks/useList.tsx";
 
 const darkTheme = createTheme({
   palette: {

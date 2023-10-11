@@ -24,7 +24,7 @@ export type SongListProps = {
   id: string;
   name: string;
   songs: SongProps[];
-  del: Boolean;
+  del: boolean;
 };
 
 export default function Lists({id}:{id:string}) {
@@ -42,9 +42,9 @@ export default function Lists({id}:{id:string}) {
   const classes = useStyles();
 
   if(!thisList) return (<HeaderBar />);
-  let name = thisList?.name;
-  let description = thisList?.description;
-  let songs = thisList?.songs;
+  const name = thisList?.name;
+  const description = thisList?.description;
+  const songs = thisList?.songs;
 
   const handleUpdateName = async () => {
     if (!inputRef.current) return;
@@ -109,6 +109,7 @@ export default function Lists({id}:{id:string}) {
       await deleteSong(song.id);
       fetchSongs();
     } catch (error) {
+      return;
     }
   }
 
@@ -193,7 +194,7 @@ export default function Lists({id}:{id:string}) {
             </div>
           </div> 
         {songs.map((song) => (
-          <div className="flex flex-row gap-4">
+          <div key={song.id} className="flex flex-row gap-4">
             <tr key={song.id}>
               <td>
                 <input
@@ -219,7 +220,7 @@ export default function Lists({id}:{id:string}) {
           <DialogTitle>Delete following songs?</DialogTitle>
           <div className="flex-col gap-3  mx-auto">
               {selectedSongs.map((song)=>(
-                <div className="flex gap-4 mx-auto">{song.title}</div>
+                <div key={song.id} className="flex gap-4 mx-auto">{song.title}</div>
                 ))}
           </div>
           <Button onClick={handleDelete}>delete</Button>

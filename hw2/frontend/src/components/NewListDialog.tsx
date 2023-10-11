@@ -21,19 +21,35 @@ export default function NewListDialog({ open, onClose }: NewListDialogProps) {
   // another way is to use a state variable and update it on change, which can be found in SongDialog.tsx
   const listName = useRef<HTMLInputElement>(null);
   const listDescription = useRef<HTMLInputElement>(null);
-  const { fetchLists } = useSongs();
+  const { lists, fetchLists } = useSongs();
 
   const handleAddList = async () => {
-    try {
-      await createList({ 
-        name: listName.current?.value ?? "", 
-        description: listDescription.current?.value ?? "",
-     });
-      fetchLists();
-    } catch (error) {
-      alert("Error: Failed to create list");
-    } finally {
-      onClose();
+    const theName = listName.current?.value ?? "";
+    const theDes = listDescription.current?.value ?? "";
+    if(theName == ""){
+      alert("Please filled in list name!");
+      return;
+    }
+    else if(lists.some((list)=>list.name==theName)){
+      alert("Already has the list name!");
+      return;
+    }
+    else if(theDes == ""){
+      alert("Please filled in list description!");
+      return;
+    }
+    else{
+      try {
+        await createList({ 
+          name: theName, 
+          description: theDes,
+      });
+        fetchLists();
+      } catch (error) {
+        alert("Error: Failed to create list");
+      } finally {
+        onClose();
+      }
     }
   };
 

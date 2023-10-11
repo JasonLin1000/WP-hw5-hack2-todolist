@@ -72,15 +72,39 @@ export default function SongDialog(props: SongDialogProps) {
   };
 
   const handleSave = async () => {
-    try {
-      if (variant === "new") {
+    const thisList = lists.find((list) => list.id == listId);
+    if (variant === "new") {
+      if(newTitle == ""){
+        alert("Please filled in song name!");
+        return;
+      }
+      if(thisList?.songs.some((song)=>song.title == newTitle)){
+        alert("Already has the song name!");
+        return;
+      }
+      if(newSinger == ""){
+        alert("Please filled in the singer!");
+        return;
+      }
+      if(newLink == ""){
+        alert("Please filled in song link!");
+        return;
+      }
+      try {
         await createSong({
           title: newTitle,
           singer: newSinger,
           list_id: listId,
           link: newLink,
         });
-      } else {
+        fetchSongs();
+      }catch(error) {
+        alert("Error: Failed to save song");
+      } finally {
+        handleClose();
+      }
+    }else{
+      try {
         if (
           newTitle === title &&
           newSinger === singer &&
@@ -89,24 +113,37 @@ export default function SongDialog(props: SongDialogProps) {
         ) {
           return;
         }
-        // typescript is smart enough to know that if variant is not "new", then it must be "edit"
-        // therefore props.songId is a valid value
         await updateSong(props.songId, {
           title: newTitle,
           singer: newSinger,
           list_id: newListId,
           link: newLink,
         });
-      }
-      fetchSongs();
-    } catch (error) {
-      alert("Error: Failed to save song");
-    } finally {
-      handleClose();
+        fetchSongs();
+     } catch (error) {
+       alert("Error: Failed to save song");
+     } finally {
+       handleClose();
+     }
     }
   };
 
   const AddTo =async () => {
+    if(newTitle == ""){
+      alert("Please filled in song name!");
+      handleAddToClose();
+      return;
+    }
+    if(newSinger == ""){
+      alert("Please filled in the singer!");
+      handleAddToClose();
+      return;
+    }
+    if(newLink == ""){
+      alert("Please filled in song link!");
+      handleAddToClose();
+      return;
+    }
     try {
       await createSong({
         title: newTitle,
@@ -140,7 +177,7 @@ export default function SongDialog(props: SongDialogProps) {
               defaultValue={title}
               onChange={(e) => setNewTitle(e.target.value)}
               className="grow"
-              placeholder="Enter a title for this song..."
+              placeholder="Enter the song name"
             />
           </ClickAwayListener>
         ) : (
@@ -176,7 +213,7 @@ export default function SongDialog(props: SongDialogProps) {
                 defaultValue={singer}
                 onChange={(e) => setNewSinger(e.target.value)}
                 className="grow"
-                placeholder="Enter a singer for this song..."
+                placeholder="Enter the singer of this song..."
               />
             </ClickAwayListener>
           ) : (
@@ -214,7 +251,7 @@ export default function SongDialog(props: SongDialogProps) {
           </button>
         )}
         <DialogActions>
-          <Button onClick={()=>setAddToOpen(true)}>add to</Button>
+          <Button onClick={()=>setAddToOpen(true)}>also add to</Button>
           <Button onClick={handleSave}>save</Button>
           <Button onClick={handleClose}>close</Button>
         </DialogActions>

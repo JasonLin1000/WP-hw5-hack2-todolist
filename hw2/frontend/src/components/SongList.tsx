@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 
 import useSongs from "@/hooks/useSongs";
 import { deleteList} from "@/utils/client";
-import uselist from "@/hooks/uselist";
+import useList from "@/hooks/useList";
 import type { SongProps } from "./Song";
 
 import Band from "../../../img/band.jpg";
@@ -17,20 +17,20 @@ export type SongListProps = {
   name: string;
   description: string;
   songs: SongProps[];
-  del: Boolean;
+  del: boolean;
 };
 
 type ListProps = {
   id: string;
   name: string;
   description: string;
-  del: Boolean;
+  del: boolean;
   songs: number;
 };
 
 export default function SongList({ id, name, description, del,songs }:ListProps) {
   const { fetchLists } = useSongs();
-  const {setPage,setList} = uselist();
+  const {setPage,setList} = useList();
   
 
   const handleDelete = async () => {
