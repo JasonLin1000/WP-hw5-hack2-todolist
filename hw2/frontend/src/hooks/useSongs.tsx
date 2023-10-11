@@ -57,9 +57,10 @@ export function SongProvider({ children }: SongProviderProps) {
 
   const lists = useMemo(() => {
     // you can do functional-ish programming in JS too
+    const del: Boolean = false;
     const listMap = rawLists.reduce(
       (acc, list) => {
-        acc[list.id] = { ...list, songs: [] };
+        acc[list.id] = { ...list, songs: [] ,del};
         return acc;
       },
       {} as Record<string, SongListProps>,

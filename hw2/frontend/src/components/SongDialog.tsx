@@ -1,20 +1,18 @@
 import { useState } from "react";
 
-import { Delete as DeleteIcon } from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import IconButton from "@mui/material/IconButton";
 import Input from "@mui/material/Input";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
 
 import useSongs from "@/hooks/useSongs";
-import { createSong, deleteSong, updateSong } from "@/utils/client";
+import { createSong,updateSong } from "@/utils/client";
 
 // this pattern is called discriminated type unions
 // you can read more about it here: https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions
@@ -49,6 +47,8 @@ export default function SongDialog(props: SongDialogProps) {
   const [editingSinger, setEditingSinger] = useState(
     variant === "new",
   );
+  const [editingLink, setEditingLink] = useState(variant === "new");
+  const [addToOpen, setAddToOpen] = useState(false);
 
   // using a state variable to store the value of the input, and update it on change is another way to get the value of a input
   // however, this method is not recommended for large forms, as it will cause a re-render on every change
@@ -56,12 +56,19 @@ export default function SongDialog(props: SongDialogProps) {
   const [newTitle, setNewTitle] = useState(title);
   const [newSinger, setNewSinger] = useState(singer);
   const [newListId, setNewListId] = useState(listId);
+  const [addListId, setAddListId] = useState(listId);
   const [newLink,setNewLink] = useState(link);
-
   const { lists, fetchSongs } = useSongs();
 
   const handleClose = () => {
+    setNewTitle(title);
+    setNewSinger(singer);
+    setNewListId(listId);
     onClose();
+  };
+
+  const handleAddToClose = () => {
+    setAddToOpen(false);
   };
 
   const handleSave = async () => {
@@ -77,7 +84,8 @@ export default function SongDialog(props: SongDialogProps) {
         if (
           newTitle === title &&
           newSinger === singer &&
-          newListId === listId
+          newListId === listId &&
+          newLink === link
         ) {
           return;
         }
@@ -87,6 +95,7 @@ export default function SongDialog(props: SongDialogProps) {
           title: newTitle,
           singer: newSinger,
           list_id: newListId,
+          link: newLink,
         });
       }
       fetchSongs();
@@ -97,21 +106,25 @@ export default function SongDialog(props: SongDialogProps) {
     }
   };
 
-  const handleDelete = async () => {
-    if (variant !== "edit") {
-      return;
-    }
+  const AddTo =async () => {
     try {
-      await deleteSong(props.songId);
+      await createSong({
+        title: newTitle,
+        singer: newSinger,
+        list_id: addListId,
+        link: newLink,
+      });
       fetchSongs();
-    } catch (error) {
-      alert("Error: Failed to delete song");
-    } finally {
-      handleClose();
+    }catch(error){
+      alert("Error: Failed to add a song to another list");
+    }finally {
+      handleAddToClose();
     }
-  };
+  }
+  
 
   return (
+    <>
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle className="flex gap-4">
         {editingTitle ? (
@@ -148,42 +161,81 @@ export default function SongDialog(props: SongDialogProps) {
             </MenuItem>
           ))}
         </Select>
-        {variant === "edit" && (
-          <IconButton color="error" onClick={handleDelete}>
-            <DeleteIcon />
-          </IconButton>
-        )}
+      </DialogTitle>
+      <DialogTitle className="flex gap-4">
+        {editingSinger ? (
+            <ClickAwayListener
+              onClickAway={() => {
+                if (variant === "edit") {
+                  setEditingSinger(false);
+                }
+              }}
+            >
+              <Input
+                autoFocus
+                defaultValue={singer}
+                onChange={(e) => setNewSinger(e.target.value)}
+                className="grow"
+                placeholder="Enter a singer for this song..."
+              />
+            </ClickAwayListener>
+          ) : (
+            <button
+              onClick={() => setEditingSinger(true)}
+              className="w-full rounded-md p-2 hover:bg-white/10"
+            >
+              <Typography className="text-start">{newSinger}</Typography>
+            </button>
+          )}
       </DialogTitle>
       <DialogContent className="w-[600px]">
-        {editingSinger ? (
+        {editingLink ? (
           <ClickAwayListener
             onClickAway={() => {
               if (variant === "edit") {
-                setEditingSinger(false);
+                setEditingLink(false);
               }
             }}
           >
             <textarea
               className="bg-white/0 p-2"
               autoFocus
-              defaultValue={singer}
-              placeholder="Add a more detailed singer..."
-              onChange={(e) => setNewSinger(e.target.value)}
+              defaultValue={link}
+              placeholder="Add a link"
+              onChange={(e) => setNewLink(e.target.value)}
             />
           </ClickAwayListener>
         ) : (
           <button
-            onClick={() => setEditingSinger(true)}
+            onClick={() => setEditingLink(true)}
             className="w-full rounded-md p-2 hover:bg-white/10"
           >
-            <Typography className="text-start">{newSinger}</Typography>
+            <Typography className="text-start">{newLink}</Typography>
           </button>
         )}
         <DialogActions>
+          <Button onClick={()=>setAddToOpen(true)}>add to</Button>
           <Button onClick={handleSave}>save</Button>
           <Button onClick={handleClose}>close</Button>
         </DialogActions>
       </DialogContent>
     </Dialog>
+    <Dialog open={addToOpen} onClose={handleAddToClose}>
+      <Select
+        value={addListId}
+        onChange={(e) => setAddListId(e.target.value)}
+      >
+        {lists.map((list) => (
+          list.id !== listId ? (
+            <MenuItem value={list.id} key={list.id}>
+              {list.name}
+            </MenuItem>
+          ) : null
+        ))}
+      </Select>
+      <Button onClick={AddTo}>add</Button>
+      <Button onClick={handleAddToClose}>cancel</Button>
+    </Dialog>
+    </>
   );
 }

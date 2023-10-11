@@ -27,7 +27,7 @@ const ListSchema = new mongoose.Schema<ListDocument>(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Song",
       },
-    ],
+    ]
   },
   {
     timestamps: true,

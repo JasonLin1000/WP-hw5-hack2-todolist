@@ -7,6 +7,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import App from "./App.tsx";
 import { SongProvider } from "./hooks/useSongs.tsx";
 import "./index.css";
+import { MyProvider } from "./hooks/uselist.tsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -21,8 +22,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider theme={darkTheme}>
       <SongProvider>
-        <CssBaseline />
-        <App />
+        <MyProvider>
+          <CssBaseline />
+          <App />
+        </MyProvider>
       </SongProvider>
     </ThemeProvider>
   </React.StrictMode>,

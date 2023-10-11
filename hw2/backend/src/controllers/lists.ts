@@ -21,7 +21,7 @@ export const getLists = async (_: Request, res: Response<GetListsResponse>) => {
       return {
         id: list.id,
         name: list.name,
-        description: list.description,
+        description: list.description, 
       };
     });
 
@@ -34,7 +34,7 @@ export const getLists = async (_: Request, res: Response<GetListsResponse>) => {
 // Get a list
 export const getList = async (
   req: Request<{ id: string }>,
-  res: Response<ListData | { error: string }>,
+  res: Response<Omit<ListData,"del"> | { error: string }>,
 ) => {
   try {
     const { id } = req.params;

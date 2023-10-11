@@ -22,6 +22,7 @@ export type ListData = {
   name: string;
   description: string;
   songs: SongData[];
+  del: Boolean;
 };
 
 export type GetSongsResponse = SongData[];
@@ -42,13 +43,13 @@ export type UpdateSongResponse = "OK";
 
 export type DeleteSongResponse = "OK";
 
-export type GetListsResponse = Omit<ListData, "songs">[];
+export type GetListsResponse = Omit<ListData, "songs" | "del">[];
 
-export type CreateListPayload = Omit<ListData, "id" | "songs">;
+export type CreateListPayload = Omit<ListData, "id" | "songs" | "del">;
 
 export type CreateListResponse = Pick<ListData, "id">;
 
-export type UpdateListPayload = Partial<Omit<ListData, "id" | "songs" | "description">>;
+export type UpdateListPayload = Partial<Omit<ListData, "id" | "songs" | "del">>;
 
 export type UpdateListResponse = "OK";
 
