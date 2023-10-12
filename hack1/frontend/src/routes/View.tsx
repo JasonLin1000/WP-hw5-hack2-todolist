@@ -21,11 +21,15 @@ const View = (): React.ReactNode => {
   const handleNextClick = useCallback(() => {
     if(pageIndex+1 == numPosts){
       setPageIndex(0);
+    }else{
+      setPageIndex(pageIndex+1);
     }
   }, []);
   const handlePrevClick = useCallback(() => {
     if(pageIndex == 0){
       setPageIndex(numPosts-1);
+    }else{
+      setPageIndex(pageIndex-1);
     }
   }, []);
   /* End (3/3) TODO 2.2 */
@@ -50,13 +54,23 @@ const View = (): React.ReactNode => {
     const handleKeyPress = (e: { code: string }) => {
       if (e.code === 'ArrowRight') {
         // Next Page
+        if(pageIndex+1 == numPosts){
+          setPageIndex(0);
+        }else{
+          setPageIndex(pageIndex+1);
+        }
       } else if (e.code === 'ArrowLeft') {
         // Previous Page
+        if(pageIndex == 0){
+          setPageIndex(numPosts-1);
+        }else{
+          setPageIndex(pageIndex-1);
+        }
       }
     };
     /* Hint 2: Add `handleKeyPress` function as event listener to keyboard input event */
-    window.addEventListener('', () => {});
-    return () => window.removeEventListener('', () => {});
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
     /* Hint 3: Update the dependency array of `useEffect` hook */
   }, []);
   /* End TODO 2.3 */
