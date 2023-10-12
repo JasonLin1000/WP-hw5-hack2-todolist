@@ -19,19 +19,19 @@ const View = (): React.ReactNode => {
   /* Hint 2.2.4: Finish next and prev click Handler */
   /* Hint 2.2.5: Refer to `PostContext` for more clue */
   const handleNextClick = useCallback(() => {
-    if(pageIndex+1 == numPosts){
+    if(pageIndex+1 === numPosts){
       setPageIndex(0);
     }else{
       setPageIndex(pageIndex+1);
     }
-  }, []);
+  }, [pageIndex]);
   const handlePrevClick = useCallback(() => {
-    if(pageIndex == 0){
+    if(pageIndex === 0){
       setPageIndex(numPosts-1);
     }else{
       setPageIndex(pageIndex-1);
     }
-  }, []);
+  }, [pageIndex]);
   /* End (3/3) TODO 2.2 */
 
   /* (1/3) TODO 2.4: Handle Voting for Unvoted Posts (8%) */
