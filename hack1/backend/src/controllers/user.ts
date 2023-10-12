@@ -33,11 +33,11 @@ export const createUser = asyncWrapper(
     /* Create new user using `UserModel` */
     /* Return 201 with new user */
     try {
-      const { id } = await UserModel.create(req.body);
+      const  id  = await UserModel.create(req.body);
       if(!id){
         throw new Error('`createUser` Not Implemented');
       }
-      return res.status(201);
+      return res.status(201).json(id);
     } catch (error) {
       throw new Error('`createUser` Not Implemented');
     }
