@@ -22,7 +22,7 @@ export type ListData = {
   name: string;
   description: string;
   songs: SongData[];
-  del: Boolean;
+  del: boolean;
 };
 
 export type GetSongsResponse = SongData[];
