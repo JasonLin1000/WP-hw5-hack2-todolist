@@ -18,9 +18,6 @@ export default function RootLayout({
     <html lang="en">
       <body className="{inter.className} flex">
         <div className="min-h-screen w-48">
-          <h1 className="text-3xl font-bold">
-            Main Menu
-          </h1>
         </div>
         <div>
           {children}
