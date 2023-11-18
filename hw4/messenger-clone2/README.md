@@ -63,7 +63,3 @@ This command launches a web UI to view or edit data in the database.
 ```bash
 yarn drizzle-kit studio
 ```
-
-### 其他
-
-搜尋功能若無輸入關鍵字，則點擊搜尋鍵會列出所有活動(可用在想取消搜尋結果時)

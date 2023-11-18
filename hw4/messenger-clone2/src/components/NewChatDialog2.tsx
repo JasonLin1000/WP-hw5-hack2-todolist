@@ -28,7 +28,7 @@ type NewActivityDialogProps = {
 export default function NewChatDialog({ open, onClose }: NewActivityDialogProps) {
   // using a ref to get the dom element is one way to get the value of a input
   // another way is to use a state variable and update it on change, which can be found in CardDialog.tsx
-    const { isUser,username } = useUserInfo();
+    const { username } = useUserInfo();
     const userInputRef = useRef<HTMLInputElement>(null);
     const { joinChat, loading } = useChatJoin();
     const { newChat } = useChat();
@@ -39,26 +39,26 @@ export default function NewChatDialog({ open, onClose }: NewActivityDialogProps)
     const handleActivity = async () => {
         const anotherUser = userInputRef.current?.value;
         const handle = username;
-        const isUserExist = await isUser(anotherUser);
+        // const isUserExist = await isUser(anotherUser);
         try {
-            if (isUserExist){alert("查無此人"); return;}
-
-            const insertInfo = await newChat({handle});
+            // if (isUserExist){alert("查無此人"); return;}
+            if (!anotherUser){alert("請輸入名稱"); return;}
+            const insertInfo = await newChat({handle:"123"});
        
-            await joinChat({
-                chatIdId: Number(insertInfo.insertedId),
-                userHandle: username,
-            });
-            await joinChat({
-                chatIdId: Number(insertInfo.insertedId),
-                userHandle: anotherUser,
-            });
+            // await joinChat({
+            //     chatIdId: Number(insertInfo.insertedId),
+            //     userHandle: username,
+            // });
+            // await joinChat({
+            //     chatIdId: Number(insertInfo.insertedId),
+            //     userHandle: anotherUser,
+            // });
 
-            router.push(`chats2/${insertInfo.insertedId.toString()}/?username=${username}`);
+            // router.push(`chats2/${insertInfo.insertedId.toString()}/?username=${username}`);
             
         } catch (e) {
             console.error(e);
-            alert("查無此人");
+            alert("error creating new chat");
             
         }
         onClose();
