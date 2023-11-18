@@ -11,34 +11,10 @@ export const {
 } = NextAuth({
   providers: [CredentialsProvider],
   callbacks: {
-    async session({ session, token }) {
-      const name = token.name || session?.user?.username;
-      if (!name) return null;
-
-      const [user] = await db
-        .select({
-          id: usersTable.displayId,
-          username: usersTable.username,
-        })
-        .from(usersTable)
-        .where(eq(usersTable.username, name))
-        .execute();
-
-      if (!user) return null;
-
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: user.id,
-          username: usersTable.username,
-        },
-      };
-    },
     async jwt({ token, account }) {
       // Sign in with social account, e.g. GitHub, Google, etc.
       if (!account) return token;
-      const { name} = token;
+      const {name} = token;
       const provider = account.provider;
       if (!name || !provider) return token;
 
@@ -58,8 +34,29 @@ export const {
         username: name,
         provider,
       });
-
+      console.log("jwt callback", token);
       return token;
+    },
+    async session({ session, token }) {
+      const name = token.name || session?.user?.username;
+      if (!name) return session;
+
+      const [user] = await db
+        .select({
+          id: usersTable.displayId,
+          username: usersTable.username,
+        })
+        .from(usersTable)
+        .where(eq(usersTable.username, name))
+        .execute();
+
+      return {
+        ...session,
+        user: {
+          id: user.id,
+          username: usersTable.username,
+        },
+      };
     },
   },
   pages: {
