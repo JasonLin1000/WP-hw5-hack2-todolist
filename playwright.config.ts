@@ -1,5 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 import path from "path";
+import { publicEnv } from "@/lib/env/public";
 
 
 /**
@@ -8,7 +9,7 @@ import path from "path";
  */
 // require('dotenv').config();
 // const PORT = process.env.PORT || 3000;
-const baseURL = `${process.env.NEXT_PUBLIC_BASE_URL!}`;
+const baseURL = `${publicEnv.NEXT_PUBLIC_BASE_URL}`;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
