@@ -1,13 +1,15 @@
 import { defineConfig, devices } from "@playwright/test";
 import path from "path";
+import { publicEnv } from "@/lib/env/public";
+
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
 // require('dotenv').config();
-const PORT = process.env.PORT || 3000;
-const baseURL = `http://localhost:${PORT}`;
+// const PORT = process.env.PORT || 3000;
+const baseURL = `${publicEnv.NEXT_PUBLIC_BASE_URL}`;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
